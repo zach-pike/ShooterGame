@@ -1,0 +1,3 @@
+[submodule "lib/LibGameNetworking"]
+	path = lib/LibGameNetworking
+	url = https://github.com/zach-pike/LibGameNetworking
