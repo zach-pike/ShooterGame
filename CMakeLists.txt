@@ -8,8 +8,14 @@ include_directories(src/)
 
 add_subdirectory(lib/LibGameNetworking)
 
-file(GLOB_RECURSE GAME_SRC src/*.cpp)
+file(GLOB_RECURSE CLIENT_SRC src/Client/*.cpp)
+file(GLOB_RECURSE SERVER_SRC src/Server/*.cpp)
 
-add_executable(main ${GAME_SRC})
+file(GLOB_RECURSE UTIL_SRC src/Utility/*.cpp)
+add_library(Utils STATIC ${UTIL_SRC})
 
-target_link_libraries(main fmt GL GLEW glfw GameNetworking)
+add_executable(GameClient ${CLIENT_SRC})
+add_executable(GameServer ${SERVER_SRC})
+
+target_link_libraries(GameClient fmt GameNetworking Utils GL GLEW glfw )
+target_link_libraries(GameServer fmt GameNetworking Utils)
