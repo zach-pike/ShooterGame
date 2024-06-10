@@ -48,7 +48,7 @@ void GLManager::setup() {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 }
 
-void GLManager::renderLoop() {
+void GLManager::renderLoop(std::shared_ptr<GameDataStore> dataStore) {
     // Create the VAO
 	GLuint vertexArrayID;
     glGenVertexArrays(1, &vertexArrayID);

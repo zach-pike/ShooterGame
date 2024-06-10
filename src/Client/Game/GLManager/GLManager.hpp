@@ -1,9 +1,11 @@
 #pragma once
 
 #include <GL/glew.h>
-
 #include <GLFW/glfw3.h>
 
+#include <memory>
+
+#include "Client/Game/GameDataStore/GameDataStore.hpp"
 #include "Utility/Logger.hpp"
 
 class GLManager {
@@ -20,5 +22,5 @@ public:
 
     // Should be run inside a seperate thread
     void setup();
-    void renderLoop();
+    void renderLoop(std::shared_ptr<GameDataStore> dataStore);
 };

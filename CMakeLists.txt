@@ -17,5 +17,7 @@ add_library(Utils STATIC ${UTIL_SRC})
 add_executable(GameClient ${CLIENT_SRC})
 add_executable(GameServer ${SERVER_SRC})
 
+target_include_directories(GameClient PUBLIC "lib/LibGameNetworking/lib/include/")
+
 target_link_libraries(GameClient fmt GameNetworking Utils GL GLEW glfw )
 target_link_libraries(GameServer fmt GameNetworking Utils)
