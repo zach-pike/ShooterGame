@@ -2,6 +2,11 @@
 
 #include <fmt/format.h>
 
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include <sstream>
+
 Shader::Shader(const std::string& _vertexFilePath, const std::string& _fragmentFilePath):
     vertexFilePath(_vertexFilePath),
     fragmentFilePath(_fragmentFilePath),
@@ -43,7 +48,7 @@ void Shader::loadShaders() {
 	GLint result = GL_FALSE;
 	int infoLogLength;
 
-    logger.info(fmt::format("Compiling shader program..."))
+    logger.info(fmt::format("Compiling shader program..."));
 
 	// Compile Vertex Shader
 	char const* vertexSourcePointer = vertexShaderCode.c_str();
@@ -77,32 +82,32 @@ void Shader::loadShaders() {
 	}
 
 	// Link the program
-	logger.log("Linking Shader Program...");
+	logger.info("Linking Shader Program...");
 
-	GLuint programID = glCreateProgram();
-	glAttachShader(programID, vertexShaderID);
-	glAttachShader(programID, fragmentShaderID);
-	glLinkProgram(programID);
+	program = glCreateProgram();
+	glAttachShader(program, vertexShaderID);
+	glAttachShader(program, fragmentShaderID);
+	glLinkProgram(program);
 
 	// Check the program
-	glGetProgramiv(programID, GL_LINK_STATUS, &result);
-	glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &infoLogLength);
+	glGetProgramiv(program, GL_LINK_STATUS, &result);
+	glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLogLength);
 
 	if (infoLogLength > 0){
 		std::vector<char> programErrorMessage(infoLogLength+1);
-		glGetProgramInfoLog(programID, infoLogLength, NULL, &programErrorMessage[0]);
+		glGetProgramInfoLog(program, infoLogLength, NULL, &programErrorMessage[0]);
 
         logger.error(fmt::format("Shader Program Linking Failure! Error Below:\n{}\n", &programErrorMessage[0]));
 	}
 
-	glDetachShader(programID, vertexShaderID);
-	glDetachShader(programID, fragmentShaderID);
+	glDetachShader(program, vertexShaderID);
+	glDetachShader(program, fragmentShaderID);
 	
 	glDeleteShader(vertexShaderID);
 	glDeleteShader(fragmentShaderID);
 
-	shaderProgram = programID;
-    program  = true;
+    shaderLoaded  = true;
+	logger.info("Shader Program loaded!");
 }
 void Shader::unloadShader() {
     if (shaderLoaded) {
